@@ -67,13 +67,22 @@ export default function EditProfileScreen({ navigation }) {
   const initial = username ? username.charAt(0).toUpperCase() : "S";
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
+      <View
+        style={[
+          styles.header,
+          { backgroundColor: colors.surface, borderBottomColor: colors.border },
+        ]}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={28} color={colors.text} />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>Edit Profile</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>
+          Edit Profile
+        </Text>
       </View>
 
       <KeyboardAvoidingView
@@ -81,20 +90,40 @@ export default function EditProfileScreen({ navigation }) {
         style={{ flex: 1 }}
       >
         {/* Avatar Section */}
-        <View style={[styles.avatarSection, { backgroundColor: colors.surface, borderBottomColor: colors.borderLight }]}>
-          <View style={[styles.avatarContainer, { backgroundColor: colors.primaryLight }]}>
-            <Text style={[styles.avatarText, { color: colors.primaryDark }]}>{initial}</Text>
+        <View
+          style={[
+            styles.avatarSection,
+            {
+              backgroundColor: colors.surface,
+              borderBottomColor: colors.borderLight,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.avatarContainer,
+              { backgroundColor: colors.primaryLight },
+            ]}
+          >
+            <Text style={[styles.avatarText, { color: colors.primaryDark }]}>
+              {initial}
+            </Text>
           </View>
-          <Text style={[styles.avatarHint, { color: colors.textMuted }]}>Tap to change photo</Text>
         </View>
 
         {/* Form Section */}
         <View style={styles.formSection}>
-          <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>Username</Text>
+          <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>
+            Username
+          </Text>
           <TextInput
             style={[
               styles.input,
-              { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text },
+              {
+                backgroundColor: colors.inputBg,
+                borderColor: colors.border,
+                color: colors.text,
+              },
               isFocused && { borderColor: colors.primary, borderWidth: 2 },
             ]}
             placeholder="Enter your username"
@@ -110,7 +139,11 @@ export default function EditProfileScreen({ navigation }) {
 
         {/* Save Button */}
         <TouchableOpacity
-          style={[styles.saveButton, { backgroundColor: colors.primary }, loading && styles.saveButtonDisabled]}
+          style={[
+            styles.saveButton,
+            { backgroundColor: colors.primary },
+            loading && styles.saveButtonDisabled,
+          ]}
           onPress={handleSave}
           disabled={loading}
           activeOpacity={0.8}

@@ -97,7 +97,9 @@ export default function DashboardScreen({ navigation }) {
         size={100}
         color={colors.border}
       />
-      <Text style={[styles.emptyTitle, { color: colors.text }]}>No Decks Yet</Text>
+      <Text style={[styles.emptyTitle, { color: colors.text }]}>
+        No Decks Yet
+      </Text>
       <Text style={[styles.emptySubtitle, { color: colors.textSecondary }]}>
         Your library is empty. Tap the green button below to generate your first
         AI study deck!
@@ -109,7 +111,10 @@ export default function DashboardScreen({ navigation }) {
     const badge = getBadgeStyle(item.difficulty || "Medium");
     return (
       <TouchableOpacity
-        style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}
+        style={[
+          styles.card,
+          { backgroundColor: colors.surface, borderColor: colors.borderLight },
+        ]}
         activeOpacity={0.7}
         onPress={() => navigation.navigate("StudyDeck", { deck: item })}
       >
@@ -120,7 +125,12 @@ export default function DashboardScreen({ navigation }) {
             alignItems: "flex-start",
           }}
         >
-          <Text style={[styles.cardTitle, { flex: 1, paddingRight: 10, color: colors.text }]}>
+          <Text
+            style={[
+              styles.cardTitle,
+              { flex: 1, paddingRight: 10, color: colors.text },
+            ]}
+          >
             {item.title}
           </Text>
           <TouchableOpacity
@@ -154,10 +164,14 @@ export default function DashboardScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <StatusBar style={colors.statusBar} />
 
-      <View style={[styles.headerContainer, { backgroundColor: colors.background }]}>
+      <View
+        style={[styles.headerContainer, { backgroundColor: colors.background }]}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -166,11 +180,19 @@ export default function DashboardScreen({ navigation }) {
           }}
         >
           <View>
-            <Text style={[styles.greeting, { color: colors.textSecondary }]}>Welcome back,</Text>
-            <Text style={[styles.title, { color: colors.text }]}>{username} 🚀</Text>
+            <Text style={[styles.greeting, { color: colors.textSecondary }]}>
+              Welcome back,
+            </Text>
+            <Text style={[styles.title, { color: colors.text }]}>
+              {username} ♣️
+            </Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Ionicons name="person-circle-outline" size={38} color={colors.primary} />
+            <Ionicons
+              name="person-circle-outline"
+              size={38}
+              color={colors.primary}
+            />
           </TouchableOpacity>
         </View>
       </View>
