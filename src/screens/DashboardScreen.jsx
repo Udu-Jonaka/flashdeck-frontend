@@ -13,8 +13,10 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import api from "../services/api";
 import { styles } from "../styles/dashboard.styles";
+import { useTheme } from "../context/ThemeContext";
 
 export default function DashboardScreen({ navigation }) {
+  const { colors } = useTheme();
   const [decks, setDecks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("Student");
@@ -40,7 +42,6 @@ export default function DashboardScreen({ navigation }) {
   const fetchDecks = async () => {
     try {
       const response = await api.get("/decks");
-      // The backend returns { count, decks } for getAllDecks, or just an array for getUserDecks
       setDecks(response.data.decks || response.data);
     } catch (error) {
       console.log("Fetch Error:", error.message);
@@ -79,13 +80,13 @@ export default function DashboardScreen({ navigation }) {
   const getBadgeStyle = (difficulty) => {
     switch (difficulty) {
       case "Easy":
-        return { bg: "#DEF7EC", text: "#03543F" };
+        return colors.badgeEasy;
       case "Medium":
-        return { bg: "#FEF08A", text: "#713F12" };
+        return colors.badgeMedium;
       case "Hard":
-        return { bg: "#FDE8E8", text: "#9B1C1C" };
+        return colors.badgeHard;
       default:
-        return { bg: "#F3F4F6", text: "#374151" };
+        return colors.badgeDefault;
     }
   };
 
@@ -94,10 +95,10 @@ export default function DashboardScreen({ navigation }) {
       <MaterialCommunityIcons
         name="cards-playing-outline"
         size={100}
-        color="#E5E7EB"
+        color={colors.border}
       />
-      <Text style={styles.emptyTitle}>No Decks Yet</Text>
-      <Text style={styles.emptySubtitle}>
+      <Text style={[styles.emptyTitle, { color: colors.text }]}>No Decks Yet</Text>
+      <Text style={[styles.emptySubtitle, { color: colors.textSecondary }]}>
         Your library is empty. Tap the green button below to generate your first
         AI study deck!
       </Text>
@@ -108,7 +109,7 @@ export default function DashboardScreen({ navigation }) {
     const badge = getBadgeStyle(item.difficulty || "Medium");
     return (
       <TouchableOpacity
-        style={styles.card}
+        style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.borderLight }]}
         activeOpacity={0.7}
         onPress={() => navigation.navigate("StudyDeck", { deck: item })}
       >
@@ -119,7 +120,7 @@ export default function DashboardScreen({ navigation }) {
             alignItems: "flex-start",
           }}
         >
-          <Text style={[styles.cardTitle, { flex: 1, paddingRight: 10 }]}>
+          <Text style={[styles.cardTitle, { flex: 1, paddingRight: 10, color: colors.text }]}>
             {item.title}
           </Text>
           <TouchableOpacity
@@ -127,7 +128,7 @@ export default function DashboardScreen({ navigation }) {
             onPress={() => handleDelete(item._id || item.id)}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Ionicons name="trash-outline" size={22} color="#EF4444" />
+            <Ionicons name="trash-outline" size={22} color={colors.danger} />
           </TouchableOpacity>
         </View>
         <View style={styles.cardFooter}>
@@ -135,10 +136,10 @@ export default function DashboardScreen({ navigation }) {
             <MaterialCommunityIcons
               name="cards-outline"
               size={18}
-              color="#6B7280"
+              color={colors.textSecondary}
               style={{ marginRight: 6 }}
             />
-            <Text style={styles.cardCount}>
+            <Text style={[styles.cardCount, { color: colors.textSecondary }]}>
               {item.cards?.length || 0} Cards
             </Text>
           </View>
@@ -153,10 +154,10 @@ export default function DashboardScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar style={colors.statusBar} />
 
-      <View style={styles.headerContainer}>
+      <View style={[styles.headerContainer, { backgroundColor: colors.background }]}>
         <View
           style={{
             flexDirection: "row",
@@ -165,11 +166,11 @@ export default function DashboardScreen({ navigation }) {
           }}
         >
           <View>
-            <Text style={styles.greeting}>Welcome back,</Text>
-            <Text style={styles.title}>{username} 🚀</Text>
+            <Text style={[styles.greeting, { color: colors.textSecondary }]}>Welcome back,</Text>
+            <Text style={[styles.title, { color: colors.text }]}>{username} 🚀</Text>
           </View>
           <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-            <Ionicons name="person-circle-outline" size={38} color="#2A9D8F" />
+            <Ionicons name="person-circle-outline" size={38} color={colors.primary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -178,7 +179,7 @@ export default function DashboardScreen({ navigation }) {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <ActivityIndicator size="large" color="#2A9D8F" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       ) : (
         <FlatList
@@ -194,7 +195,7 @@ export default function DashboardScreen({ navigation }) {
       )}
 
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: colors.primary }]}
         activeOpacity={0.8}
         onPress={() => navigation.navigate("CreateDeck")}
       >

@@ -8,25 +8,23 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../styles/study.styles';
+import { useTheme } from '../context/ThemeContext';
 
 export default function StudyScreen({ route, navigation }) {
-  // We expect the Dashboard to pass the selected deck via navigation params
+  const { colors, isDark } = useTheme();
   const { deck } = route.params; 
-  const flashcards = deck.cards || []; // <-- Updated from deck.flashcards
+  const flashcards = deck.cards || [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // The 3D Animation Engine
   const flipAnimation = useRef(new Animated.Value(0)).current;
 
-  // Values from 0 to 180 degrees
   const frontInterpolate = flipAnimation.interpolate({
     inputRange: [0, 180],
     outputRange: ['0deg', '180deg'],
   });
 
-  // Values from 180 to 360 degrees (Back starts flipped)
   const backInterpolate = flipAnimation.interpolate({
     inputRange: [0, 180],
     outputRange: ['180deg', '360deg'],
@@ -53,7 +51,6 @@ export default function StudyScreen({ route, navigation }) {
 
   const handleNext = () => {
     if (currentIndex < flashcards.length - 1) {
-      // If card is flipped, flip it back instantly without animation before moving to next
       if (isFlipped) {
         flipAnimation.setValue(0);
         setIsFlipped(false);
@@ -74,14 +71,14 @@ export default function StudyScreen({ route, navigation }) {
 
   if (flashcards.length === 0) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back" size={28} color="#111827" />
+            <Ionicons name="arrow-back" size={28} color={colors.text} />
           </TouchableOpacity>
         </View>
         <View style={styles.cardContainer}>
-          <Text style={{ fontSize: 18 }}>No flashcards in this deck.</Text>
+          <Text style={{ fontSize: 18, color: colors.text }}>No flashcards in this deck.</Text>
         </View>
       </SafeAreaView>
     );
@@ -90,14 +87,14 @@ export default function StudyScreen({ route, navigation }) {
   const currentCard = flashcards[currentIndex];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#111827" />
+          <Ionicons name="arrow-back" size={28} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle} numberOfLines={1}>{deck.title}</Text>
-        <Text style={styles.progressText}>{currentIndex + 1} / {flashcards.length}</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]} numberOfLines={1}>{deck.title}</Text>
+        <Text style={[styles.progressText, { color: colors.textSecondary }]}>{currentIndex + 1} / {flashcards.length}</Text>
       </View>
 
       {/* 3D Animated Card Area */}
@@ -106,15 +103,22 @@ export default function StudyScreen({ route, navigation }) {
           <View style={styles.flipWrapper}>
             
             {/* FRONT OF CARD */}
-            <Animated.View style={[styles.card, { transform: [{ rotateY: frontInterpolate }] }]}>
-              <Text style={styles.cardLabel}>Question</Text>
-              <Text style={styles.cardText}>{currentCard.q}</Text>
+            <Animated.View style={[
+              styles.card, 
+              { backgroundColor: colors.surface, borderColor: colors.borderLight, transform: [{ rotateY: frontInterpolate }] }
+            ]}>
+              <Text style={[styles.cardLabel, { color: colors.textMuted }]}>Question</Text>
+              <Text style={[styles.cardText, { color: colors.text }]}>{currentCard.q}</Text>
             </Animated.View>
 
             {/* BACK OF CARD */}
-            <Animated.View style={[styles.card, styles.cardBack, { transform: [{ rotateY: backInterpolate }] }]}>
-              <Text style={styles.cardLabel}>Answer</Text>
-              <Text style={styles.cardText}>{currentCard.a}</Text>
+            <Animated.View style={[
+              styles.card, 
+              styles.cardBack, 
+              { backgroundColor: isDark ? '#134E4A' : '#DEF7EC', borderColor: isDark ? '#2DD4BF' : '#A7F3D0', transform: [{ rotateY: backInterpolate }] }
+            ]}>
+              <Text style={[styles.cardLabel, { color: colors.textMuted }]}>Answer</Text>
+              <Text style={[styles.cardText, { color: colors.text }]}>{currentCard.a}</Text>
             </Animated.View>
 
           </View>
@@ -124,23 +128,23 @@ export default function StudyScreen({ route, navigation }) {
       {/* Navigation Controls */}
       <View style={styles.controls}>
         <TouchableOpacity 
-          style={[styles.navButton, currentIndex > 0 && styles.navButtonActive]} 
+          style={[styles.navButton, { backgroundColor: colors.border }, currentIndex > 0 && { backgroundColor: colors.primary }]} 
           onPress={handlePrev}
           disabled={currentIndex === 0}
         >
-          <Ionicons name="arrow-back" size={28} color={currentIndex > 0 ? "#FFFFFF" : "#9CA3AF"} />
+          <Ionicons name="arrow-back" size={28} color={currentIndex > 0 ? "#FFFFFF" : colors.textMuted} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.flipButton} onPress={flipCard}>
+        <TouchableOpacity style={[styles.flipButton, { backgroundColor: isDark ? colors.surface : '#111827' }]} onPress={flipCard}>
           <Text style={styles.flipButtonText}>Flip Card</Text>
         </TouchableOpacity>
 
         <TouchableOpacity 
-          style={[styles.navButton, currentIndex < flashcards.length - 1 && styles.navButtonActive]} 
+          style={[styles.navButton, { backgroundColor: colors.border }, currentIndex < flashcards.length - 1 && { backgroundColor: colors.primary }]} 
           onPress={handleNext}
           disabled={currentIndex === flashcards.length - 1}
         >
-          <Ionicons name="arrow-forward" size={28} color={currentIndex < flashcards.length - 1 ? "#FFFFFF" : "#9CA3AF"} />
+          <Ionicons name="arrow-forward" size={28} color={currentIndex < flashcards.length - 1 ? "#FFFFFF" : colors.textMuted} />
         </TouchableOpacity>
       </View>
 

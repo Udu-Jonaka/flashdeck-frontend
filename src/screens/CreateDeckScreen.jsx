@@ -13,10 +13,12 @@ import {
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import api from "../services/api"; // Make sure this path points to your interceptor API file
+import api from "../services/api"; 
 import { styles } from "../styles/createDeck.styles";
+import { useTheme } from "../context/ThemeContext";
 
 export default function CreateDeckScreen({ navigation }) {
+  const { colors, isDark } = useTheme();
   const [topic, setTopic] = useState("");
   const [material, setMaterial] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,13 +34,13 @@ export default function CreateDeckScreen({ navigation }) {
           "application/pdf",
           "text/plain",
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ], // Limits to PDF, TXT, and DOCX
+        ],
         copyToCacheDirectory: true,
       });
 
       if (!result.canceled) {
         setSelectedFile(result.assets[0]);
-        setMaterial(""); // Clear text if a file is chosen to avoid sending both
+        setMaterial("");
       }
     } catch (err) {
       Alert.alert("Error", "Failed to pick document");
@@ -54,7 +56,6 @@ export default function CreateDeckScreen({ navigation }) {
     setLoading(true);
 
     try {
-      // 1. Prepare the multipart payload
       const formData = new FormData();
       formData.append("topic", topic);
       formData.append("difficulty", difficulty);
@@ -70,7 +71,6 @@ export default function CreateDeckScreen({ navigation }) {
         formData.append("text", material);
       }
 
-      // 2. Send to the backend
       const response = await api.post("/decks/generate", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -78,8 +78,6 @@ export default function CreateDeckScreen({ navigation }) {
       });
 
       console.log("Success! Deck generated:", response.data);
-
-      // 3. Navigate back to the Dashboard on success
       navigation.goBack();
     } catch (error) {
       console.log("Generation Error:", error.response?.data || error.message);
@@ -92,13 +90,13 @@ export default function CreateDeckScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#111827" />
+          <Ionicons name="arrow-back" size={28} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Create New Deck</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Create New Deck</Text>
       </View>
 
       <KeyboardAvoidingView
@@ -106,42 +104,43 @@ export default function CreateDeckScreen({ navigation }) {
         style={{ flex: 1 }}
       >
         <ScrollView contentContainerStyle={styles.content}>
-          <Text style={styles.label}>Topic</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Topic</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text }]}
             placeholder="e.g. Quantum Physics"
+            placeholderTextColor={colors.textMuted}
             value={topic}
             onChangeText={setTopic}
           />
 
-          <Text style={styles.label}>How do you want to provide content?</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>How do you want to provide content?</Text>
 
           {/* Document Upload Area */}
           {!selectedFile ? (
             <TouchableOpacity
-              style={styles.uploadContainer}
+              style={[styles.uploadContainer, { backgroundColor: colors.surface, borderColor: colors.border }]}
               onPress={pickDocument}
             >
-              <Ionicons name="cloud-upload-outline" size={32} color="#2A9D8F" />
-              <Text style={styles.uploadText}>Upload PDF, DOCX, or TXT File</Text>
+              <Ionicons name="cloud-upload-outline" size={32} color={colors.primary} />
+              <Text style={[styles.uploadText, { color: colors.textSecondary }]}>Upload PDF, DOCX, or TXT File</Text>
             </TouchableOpacity>
           ) : (
-            <View style={styles.fileInfo}>
-              <Ionicons name="document-text" size={24} color="#03543F" />
-              <Text style={styles.fileName} numberOfLines={1}>
+            <View style={[styles.fileInfo, { backgroundColor: colors.primaryLight }]}>
+              <Ionicons name="document-text" size={24} color={colors.primaryDark} />
+              <Text style={[styles.fileName, { color: colors.primaryDark }]} numberOfLines={1}>
                 {selectedFile.name}
               </Text>
               <TouchableOpacity onPress={() => setSelectedFile(null)}>
-                <Ionicons name="close-circle" size={24} color="#03543F" />
+                <Ionicons name="close-circle" size={24} color={colors.primaryDark} />
               </TouchableOpacity>
             </View>
           )}
 
           {/* Visual Divider */}
           <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>OR PASTE TEXT</Text>
-            <View style={styles.dividerLine} />
+            <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+            <Text style={[styles.dividerText, { color: colors.textMuted }]}>OR PASTE TEXT</Text>
+            <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
           </View>
 
           {/* Text Area */}
@@ -149,6 +148,7 @@ export default function CreateDeckScreen({ navigation }) {
             style={[
               styles.input,
               styles.textArea,
+              { backgroundColor: colors.inputBg, borderColor: colors.border, color: colors.text },
               selectedFile && { opacity: 0.5 },
             ]}
             placeholder={
@@ -156,61 +156,66 @@ export default function CreateDeckScreen({ navigation }) {
                 ? "Using uploaded document..."
                 : "Paste notes here..."
             }
+            placeholderTextColor={colors.textMuted}
             multiline
             value={material}
             onChangeText={setMaterial}
-            editable={!selectedFile} // Disable keyboard input if a file is already selected
+            editable={!selectedFile}
           />
 
-          <Text style={styles.label}>Difficulty</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Difficulty</Text>
           <View style={styles.difficultyRow}>
-            {["Easy", "Medium", "Hard"].map((level) => (
+            {["Easy", "Medium", "Hard"].map((level) => {
+              const isActive = difficulty === level;
+              return (
               <TouchableOpacity
                 key={level}
                 style={[
                   styles.difficultyBtn,
-                  difficulty === level && styles.activeDifficulty,
+                  { backgroundColor: colors.surface, borderColor: colors.border },
+                  isActive && { backgroundColor: colors.primary, borderColor: colors.primary },
                 ]}
                 onPress={() => setDifficulty(level)}
               >
                 <Text
                   style={[
                     styles.difficultyText,
-                    difficulty === level && styles.activeDifficultyText,
+                    { color: colors.textSecondary },
+                    isActive && { color: "#FFFFFF" },
                   ]}
                 >
                   {level}
                 </Text>
               </TouchableOpacity>
-            ))}
+            )})}
           </View>
 
-          <Text style={styles.label}>Number of Cards</Text>
+          <Text style={[styles.label, { color: colors.textSecondary }]}>Number of Cards</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 30 }}>
             <TouchableOpacity 
-              style={{ padding: 10, backgroundColor: amount <= 5 ? '#F3F4F6' : '#E5E7EB', borderRadius: 10, width: 50, alignItems: 'center' }}
+              style={{ padding: 10, backgroundColor: amount <= 5 ? colors.borderLight : colors.border, borderRadius: 10, width: 50, alignItems: 'center' }}
               onPress={() => setAmount(prev => Math.max(5, prev - 1))}
               disabled={amount <= 5}
             >
-              <Ionicons name="remove" size={24} color={amount <= 5 ? "#9CA3AF" : "#374151"} />
+              <Ionicons name="remove" size={24} color={amount <= 5 ? colors.textMuted : colors.text} />
             </TouchableOpacity>
             
             <View style={{ width: 60, alignItems: 'center' }}>
-              <Text style={{ fontSize: 24, fontWeight: '700', color: '#111827' }}>{amount}</Text>
+              <Text style={{ fontSize: 24, fontWeight: '700', color: colors.text }}>{amount}</Text>
             </View>
             
             <TouchableOpacity 
-              style={{ padding: 10, backgroundColor: amount >= 40 ? '#F3F4F6' : '#E5E7EB', borderRadius: 10, width: 50, alignItems: 'center' }}
+              style={{ padding: 10, backgroundColor: amount >= 40 ? colors.borderLight : colors.border, borderRadius: 10, width: 50, alignItems: 'center' }}
               onPress={() => setAmount(prev => Math.min(40, prev + 1))}
               disabled={amount >= 40}
             >
-              <Ionicons name="add" size={24} color={amount >= 40 ? "#9CA3AF" : "#374151"} />
+              <Ionicons name="add" size={24} color={amount >= 40 ? colors.textMuted : colors.text} />
             </TouchableOpacity>
           </View>
 
           {/* Generate Button */}
           <TouchableOpacity
-            style={styles.generateBtn}
+            style={[styles.generateBtn, { backgroundColor: colors.primary }]}
             onPress={handleGenerate}
             disabled={loading}
           >

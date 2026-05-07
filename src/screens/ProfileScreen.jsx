@@ -13,15 +13,17 @@ import * as SecureStore from "expo-secure-store";
 import { useFocusEffect } from "@react-navigation/native";
 import api from "../services/api";
 import { styles } from "../styles/profile.styles";
+import { useTheme } from "../context/ThemeContext";
 
 export default function ProfileScreen({ navigation }) {
+  const { colors } = useTheme();
   const [userProfile, setUserProfile] = useState(null);
   const [stats, setStats] = useState({ decks: 0, cards: 0 });
 
   useFocusEffect(
     useCallback(() => {
       fetchProfileData();
-    }, [])
+    }, []),
   );
 
   const fetchProfileData = async () => {
@@ -36,6 +38,7 @@ export default function ProfileScreen({ navigation }) {
       console.log("Fetch Profile Error:", error.message);
     }
   };
+
   // The Logout Logic
   const handleLogout = () => {
     Alert.alert("Log Out", "Are you sure you want to log out?", [
@@ -45,9 +48,7 @@ export default function ProfileScreen({ navigation }) {
         style: "destructive",
         onPress: async () => {
           try {
-            // 1. Destroy the secure token
             await SecureStore.deleteItemAsync("userToken");
-            // 2. Route them entirely out of the app stack back to Login
             navigation.replace("Login");
           } catch (error) {
             Alert.alert("Error", "Failed to log out. Please try again.");
@@ -70,65 +71,74 @@ export default function ProfileScreen({ navigation }) {
 
     return (
       <TouchableOpacity
-        style={[styles.menuItem, isDestructive && styles.logoutItem]}
+        style={[styles.menuItem, { backgroundColor: colors.surface }, isDestructive && styles.logoutItem]}
         onPress={onPress}
         activeOpacity={0.7}
       >
         <View
           style={[
             styles.menuIconContainer,
-            isDestructive && styles.logoutIconContainer,
+            { backgroundColor: colors.borderLight },
+            isDestructive && { backgroundColor: colors.dangerLight },
           ]}
         >
           <IconComponent
             name={icon}
             size={20}
-            color={isDestructive ? "#EF4444" : "#6B7280"}
+            color={isDestructive ? colors.danger : colors.textSecondary}
           />
         </View>
-        <Text style={[styles.menuText, isDestructive && styles.logoutText]}>
+        <Text style={[styles.menuText, { color: colors.text }, isDestructive && { color: colors.danger }]}>
           {title}
         </Text>
         {!isDestructive && (
-          <Ionicons name="chevron-forward" size={20} color="#D1D5DB" />
+          <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
         )}
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      <StatusBar style={colors.statusBar} />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={28} color="#111827" />
+          <Ionicons name="arrow-back" size={28} color={colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Profile</Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Profile</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Identity & Stats Section */}
-        <View style={styles.profileSection}>
-          <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>{userProfile?.profile?.username?.charAt(0).toUpperCase() || "S"}</Text>
+        <View style={[styles.profileSection, { backgroundColor: colors.surface, borderBottomColor: colors.borderLight }]}>
+          <View style={[styles.avatarContainer, { backgroundColor: colors.primaryLight }]}>
+            <Text style={[styles.avatarText, { color: colors.primaryDark }]}>
+              {userProfile?.profile?.username?.charAt(0).toUpperCase() || "S"}
+            </Text>
           </View>
-          <Text style={styles.name}>{userProfile?.profile?.username || "Student"}</Text>
-          <Text style={styles.email}>{userProfile?.email || "loading..."}</Text>
+          <Text style={[styles.name, { color: colors.text }]}>
+            {userProfile?.profile?.username || "Student"}
+          </Text>
+          <Text style={[styles.email, { color: colors.textSecondary }]}>
+            {userProfile?.email || "loading..."}
+          </Text>
 
           <View style={styles.statsContainer}>
             <View style={styles.statBox}>
-              <Text style={styles.statNumber}>{stats.decks}</Text>
-              <Text style={styles.statLabel}>Decks</Text>
+              <Text style={[styles.statNumber, { color: colors.primary }]}>{stats.decks}</Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Decks</Text>
             </View>
             <View style={styles.statBox}>
-              <Text style={styles.statNumber}>{stats.cards}</Text>
-              <Text style={styles.statLabel}>Cards</Text>
+              <Text style={[styles.statNumber, { color: colors.primary }]}>{stats.cards}</Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Cards</Text>
             </View>
             <View style={styles.statBox}>
-              <Text style={styles.statNumber}>🔥 {userProfile?.streakCount || 1}</Text>
-              <Text style={styles.statLabel}>Day Streak</Text>
+              <Text style={[styles.statNumber, { color: colors.primary }]}>
+                🔥 {userProfile?.streakCount || 1}
+              </Text>
+              <Text style={[styles.statLabel, { color: colors.textSecondary }]}>Day Streak</Text>
             </View>
           </View>
         </View>
@@ -136,10 +146,10 @@ export default function ProfileScreen({ navigation }) {
         {/* Menu Section */}
         <View style={styles.menuContainer}>
           {renderMenuItem("person-outline", "Ionicons", "Edit Profile", () =>
-            console.log("Go to Edit Profile"),
+            navigation.navigate("EditProfile"),
           )}
           {renderMenuItem("cog-outline", "Ionicons", "Preferences", () =>
-            console.log("Go to Preferences"),
+            navigation.navigate("Preferences"),
           )}
           {renderMenuItem("star-outline", "Ionicons", "Upgrade to Pro", () =>
             console.log("Go to Pro"),
