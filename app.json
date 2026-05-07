@@ -3,6 +3,9 @@
     "name": "flashdeck-frontend",
     "slug": "flashdeck-frontend",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -24,6 +27,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d5939671-4b13-4c7c-a187-b8e9e1c25bd1"
+      }
+    },
+    "owner": "jonaka"
   }
 }

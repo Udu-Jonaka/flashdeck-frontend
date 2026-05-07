@@ -1,0 +1,162 @@
+import { StyleSheet, Platform } from "react-native";
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === "android" ? 50 : 10,
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F3F4F6",
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111827",
+    marginLeft: 16,
+  },
+  content: {
+    padding: 24,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 8,
+    marginTop: 20,
+  },
+  input: {
+    backgroundColor: "#F9FAFB",
+    borderRadius: 12,
+    padding: 16,
+    fontSize: 16,
+    color: "#111827",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+  textArea: {
+    height: 150,
+    textAlignVertical: "top",
+  },
+  difficultyRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  difficultyBtn: {
+    flex: 1,
+    paddingVertical: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    alignItems: "center",
+    marginHorizontal: 4,
+  },
+  activeDifficulty: {
+    backgroundColor: "#2A9D8F",
+    borderColor: "#2A9D8F",
+  },
+  difficultyText: {
+    fontWeight: "600",
+    color: "#6B7280",
+  },
+  activeDifficultyText: {
+    color: "#FFFFFF",
+  },
+  generateBtn: {
+    backgroundColor: "#2A9D8F",
+    flexDirection: "row",
+    paddingVertical: 18,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    shadowColor: "#2A9D8F",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  generateBtnText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "700",
+    marginRight: 8,
+  },
+  // Add these to your existing styles in src/styles/createDeck.styles.js
+  uploadContainer: {
+    marginTop: 10,
+    borderWidth: 2,
+    borderColor: "#E5E7EB",
+    borderStyle: "dashed", // SaaS standard for file uploads
+    borderRadius: 12,
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: "#F9FAFB",
+  },
+  uploadText: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#6B7280",
+    fontWeight: "500",
+  },
+  fileInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#DEF7EC", // Soft green background for selected file
+    padding: 12,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  fileName: {
+    flex: 1,
+    fontSize: 14,
+    color: "#03543F",
+    fontWeight: "600",
+    marginHorizontal: 10,
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 25,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#E5E7EB",
+  },
+  dividerText: {
+    marginHorizontal: 10,
+    color: "#9CA3AF",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  amountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#F9FAFB",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    padding: 8,
+    marginTop: 10,
+  },
+  amountBtn: {
+    backgroundColor: "#FFFFFF",
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+  amountText: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111827",
+  },
+});
