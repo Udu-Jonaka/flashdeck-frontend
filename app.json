@@ -34,6 +34,9 @@
         "projectId": "d5939671-4b13-4c7c-a187-b8e9e1c25bd1"
       }
     },
-    "owner": "jonaka"
+    "owner": "jonaka",
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
