@@ -66,7 +66,7 @@ export function ThemeProvider({ children }) {
         setThemePreference(saved);
       }
     } catch (error) {
-      console.log("Failed to load theme:", error.message);
+      if (__DEV__) console.log("Failed to load theme:", error.message);
     } finally {
       setIsReady(true);
     }
@@ -77,7 +77,7 @@ export function ThemeProvider({ children }) {
     try {
       await AsyncStorage.setItem(THEME_KEY, value);
     } catch (error) {
-      console.log("Failed to save theme:", error.message);
+      if (__DEV__) console.log("Failed to save theme:", error.message);
     }
   };
 

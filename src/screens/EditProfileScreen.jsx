@@ -1,14 +1,14 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
+  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
@@ -36,7 +36,7 @@ export default function EditProfileScreen({ navigation }) {
       setUsername(name);
       setOriginalUsername(name);
     } catch (error) {
-      console.log("Fetch Profile Error:", error.message);
+      if (__DEV__) console.log("Fetch Profile Error:", error.message);
     }
   };
 

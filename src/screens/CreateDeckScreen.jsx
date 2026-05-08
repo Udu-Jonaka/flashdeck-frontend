@@ -1,15 +1,15 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Alert,
+  Alert
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as SecureStore from "expo-secure-store";

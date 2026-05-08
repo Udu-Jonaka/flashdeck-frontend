@@ -1,12 +1,12 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   FlatList,
-  SafeAreaView,
   ActivityIndicator,
-  Alert,
+  Alert
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -35,7 +35,7 @@ export default function DashboardScreen({ navigation }) {
         setUsername(res.data.user.profile.username);
       }
     } catch (error) {
-      console.log("Fetch Profile Error:", error.message);
+      if (__DEV__) console.log("Fetch Profile Error:", error.message);
     }
   };
 
@@ -44,7 +44,7 @@ export default function DashboardScreen({ navigation }) {
       const response = await api.get("/decks");
       setDecks(response.data.decks || response.data);
     } catch (error) {
-      console.log("Fetch Error:", error.message);
+      if (__DEV__) console.log("Fetch Error:", error.message);
     } finally {
       setLoading(false);
     }

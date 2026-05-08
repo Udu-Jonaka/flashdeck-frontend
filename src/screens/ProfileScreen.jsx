@@ -1,11 +1,11 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
-  Alert,
+  Alert
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -35,7 +35,7 @@ export default function ProfileScreen({ navigation }) {
         cards: response.data.cardCount || 0,
       });
     } catch (error) {
-      console.log("Fetch Profile Error:", error.message);
+      if (__DEV__) console.log("Fetch Profile Error:", error.message);
     }
   };
 
@@ -151,14 +151,14 @@ export default function ProfileScreen({ navigation }) {
           {renderMenuItem("cog-outline", "Ionicons", "Preferences", () =>
             navigation.navigate("Preferences"),
           )}
-          {renderMenuItem("star-outline", "Ionicons", "Upgrade to Pro", () =>
-            console.log("Go to Pro"),
-          )}
+          {renderMenuItem("star-outline", "Ionicons", "Upgrade to Pro", () => {
+            if (__DEV__) console.log("Go to Pro");
+          })}
           {renderMenuItem(
             "help-circle-outline",
             "Ionicons",
             "Help & Support",
-            () => console.log("Go to Support"),
+            () => { if (__DEV__) console.log("Go to Support"); },
           )}
 
           {/* Logout Button */}

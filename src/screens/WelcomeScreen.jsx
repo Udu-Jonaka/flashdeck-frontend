@@ -1,11 +1,11 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   Text,
   View,
   TouchableOpacity,
-  SafeAreaView,
-  Image,
+  Image
 } from "react-native";
 
 // Import your separated styles!

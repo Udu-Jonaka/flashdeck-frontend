@@ -1,8 +1,8 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import Constants from "expo-constants";
 
-// REMEMBER TO USE YOUR ACTUAL IP OR LOCALHOST URL HERE!
-const BASE_URL = "https://flashdeck-backend-htnq.onrender.com/api";
+const BASE_URL = Constants.expoConfig.extra.apiUrl;
 
 const api = axios.create({
   baseURL: BASE_URL,

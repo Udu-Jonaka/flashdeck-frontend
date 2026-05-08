@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import { View, ActivityIndicator } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import api from "./src/services/api";
 import { ThemeProvider } from "./src/context/ThemeContext";
 
@@ -53,24 +54,26 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName={initialRoute}
-        >
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
-          <Stack.Screen name="Verify" component={VerifyScreen} />
-          <Stack.Screen name="Dashboard" component={DashboardScreen} />
-          <Stack.Screen name="CreateDeck" component={CreateDeckScreen} />
-          <Stack.Screen name="StudyDeck" component={StudyScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-          <Stack.Screen name="Preferences" component={PreferencesScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={initialRoute}
+          >
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
+            <Stack.Screen name="Verify" component={VerifyScreen} />
+            <Stack.Screen name="Dashboard" component={DashboardScreen} />
+            <Stack.Screen name="CreateDeck" component={CreateDeckScreen} />
+            <Stack.Screen name="StudyDeck" component={StudyScreen} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="Preferences" component={PreferencesScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }

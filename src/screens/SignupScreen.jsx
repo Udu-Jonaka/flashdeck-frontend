@@ -1,14 +1,14 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState } from "react";
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import api from "../services/api";

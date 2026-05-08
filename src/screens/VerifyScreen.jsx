@@ -1,14 +1,14 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
@@ -56,7 +56,7 @@ export default function VerifyScreen({ route, navigation }) {
       // Navigate to Dashboard and prevent going back!
       navigation.replace("Dashboard");
     } catch (error) {
-      console.log("Backend Error Response:", error.response?.data);
+      if (__DEV__) console.log("Backend Error Response:", error.response?.data);
       const message = error.response?.data?.message || "Verification failed";
       Alert.alert("Error", message);
     } finally {

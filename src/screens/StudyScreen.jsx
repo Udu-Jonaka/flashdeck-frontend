@@ -1,11 +1,11 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useRef } from 'react';
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  Animated 
-} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Animated
+} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from '../styles/study.styles';
 import { useTheme } from '../context/ThemeContext';
