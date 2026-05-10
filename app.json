@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "flashdeck-frontend",
-    "slug": "flashdeck-frontend",
+    "name": "Flashdeck",
+    "slug": "flashdeck",
     "version": "1.0.0",
     "runtimeVersion": {
       "policy": "appVersion"

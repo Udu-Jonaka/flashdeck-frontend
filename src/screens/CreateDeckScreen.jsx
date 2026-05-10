@@ -40,7 +40,17 @@ export default function CreateDeckScreen({ navigation }) {
       });
 
       if (!result.canceled) {
-        setSelectedFile(result.assets[0]);
+        const file = result.assets[0];
+
+        // 10MB limit to prevent native memory crashes
+        if (file.size > 10 * 1024 * 1024) {
+          return Alert.alert(
+            "File Too Large",
+            "Please select a file smaller than 10MB.",
+          );
+        }
+
+        setSelectedFile(file);
         setMaterial("");
       }
     } catch (err) {
