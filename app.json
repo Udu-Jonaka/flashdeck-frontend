@@ -42,6 +42,9 @@
     "owner": "jonaka",
     "plugins": [
       "expo-secure-store"
-    ]
+    ],
+    "updates": {
+      "url": "https://u.expo.dev/d5939671-4b13-4c7c-a187-b8e9e1c25bd1"
+    }
   }
 }
